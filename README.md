@@ -1,36 +1,126 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 C&L SEO Lead Finder (Next.js)
 
-## Getting Started
+**Modern rebuild of the SEO Lead Finder using Next.js, TypeScript, and Tailwind CSS**
 
-First, run the development server:
+Built by C&L Page Services
+
+---
+
+## ✨ Features
+
+- 🔍 **Manual Search** - Find SEO leads on-demand by location and industry
+- ⏰ **Automation** - Schedule weekly lead generation runs
+- 📊 **Results Dashboard** - View, filter, and export your leads
+- 🔒 **Password Protection** - Secure access to the tool
+- 🎨 **Beautiful UI** - Glassmorphic design with smooth animations
+- ⚡ **Real-time SEO Analysis** - Uses Google PageSpeed Insights API
+
+---
+
+## 🛠️ Tech Stack
+
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type-safe code
+- **Tailwind CSS** - Utility-first styling
+- **Lucide React** - Beautiful icons
+- **Google Places API** - Business discovery
+- **PageSpeed Insights API** - SEO scoring
+
+---
+
+## 🚀 Getting Started
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Set Up Environment Variables
+
+Copy `.env.example` to `.env` and add your API keys:
+
+```bash
+GOOGLE_PLACES_API_KEY=your_key_here
+PSI_API_KEY=your_key_here
+```
+
+### 3. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Default Password:** `sequel123` or `admin`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📁 Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+cl-seo-auto/
+├── app/
+│   ├── api/search/          # API route for lead search
+│   ├── search/              # Manual search page
+│   ├── automation/          # Automation config page
+│   ├── results/             # Results dashboard
+│   └── page.tsx             # Landing page
+├── components/
+│   └── PasswordGate.tsx     # Authentication component
+└── .env                     # API keys (not in git)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔑 API Keys Needed
 
-## Deploy on Vercel
+1. **Google Places API** - Get at [Google Cloud Console](https://console.cloud.google.com/)
+2. **PageSpeed Insights API** - Same as above
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+*Note: You can use the same API keys from the old Streamlit project!*
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🌐 Deployment
+
+### Deploy to Vercel:
+
+1. Push to GitHub (already done!)
+2. Go to [vercel.com](https://vercel.com)
+3. Import the `CL-SEO-AUTO` repository
+4. Add environment variables in Vercel dashboard
+5. Deploy!
+
+---
+
+## 🎯 How It Works
+
+1. **User enters location & industry** (or uses auto-discovery)
+2. **Google Places API** finds businesses in that area
+3. **PageSpeed Insights API** analyzes each website's SEO
+4. **Results are scored** (0-100) based on SEO quality
+5. **Leads are categorized** as Hot (70+), Warm (50-69), or Cold (<50)
+
+---
+
+## 📝 To-Do
+
+- [ ] Add database for persistent lead storage
+- [ ] Implement actual automation scheduler
+- [ ] Add email discovery (Hunter.io integration)
+- [ ] Add export to Google Sheets
+- [ ] Add Slack notifications
+- [ ] Improve SEO scoring algorithm
+
+---
+
+## 🔗 Related Projects
+
+- **Old Streamlit Version**: `seo_lead_finder/` (still running at cl-seo.com)
+- **C&L Page**: `candlpage/` (cl-page.com)
+
+---
+
+Built with 💜 by C&L Page Services
