@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npm run build",
+  "env": {
+    "GOOGLE_PLACES_API_KEY": "@google_places_api_key",
+    "PSI_API_KEY": "@psi_api_key"
+  }
+}
+
