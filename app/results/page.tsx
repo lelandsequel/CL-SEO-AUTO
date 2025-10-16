@@ -1,14 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Home, Download, Filter, TrendingUp, Users, Target } from 'lucide-react';
+import { Home, Download, Filter, TrendingUp, Users, Target, Loader2 } from 'lucide-react';
 
 export default function ResultsPage() {
   const [filter, setFilter] = useState<'all' | 'hot' | 'warm' | 'cold'>('all');
-  
-  // Mock data
-  const allLeads = [
+  const [allLeads, setAllLeads] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
+
+  const fetchLeads = async () => {
+    try {
+      const response = await fetch('/api/leads');
+      const data = await response.json();
+
+      if (data.leads) {
+        setAllLeads(data.leads);
+      }
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Mock data fallback
+  const mockLeads = [
     {
       id: 1,
       business: 'Austin Dental Care',
@@ -66,7 +87,10 @@ export default function ResultsPage() {
     },
   ];
 
-  const filteredLeads = allLeads.filter(lead => {
+  // Use real leads if available, otherwise use mock data
+  const leadsToDisplay = allLeads.length > 0 ? allLeads : mockLeads;
+
+  const filteredLeads = leadsToDisplay.filter(lead => {
     if (filter === 'hot') return lead.seo_score >= 70;
     if (filter === 'warm') return lead.seo_score >= 50 && lead.seo_score < 70;
     if (filter === 'cold') return lead.seo_score < 50;
@@ -74,10 +98,10 @@ export default function ResultsPage() {
   });
 
   const stats = {
-    total: allLeads.length,
-    hot: allLeads.filter(l => l.seo_score >= 70).length,
-    warm: allLeads.filter(l => l.seo_score >= 50 && l.seo_score < 70).length,
-    cold: allLeads.filter(l => l.seo_score < 50).length,
+    total: leadsToDisplay.length,
+    hot: leadsToDisplay.filter(l => l.seo_score >= 70).length,
+    warm: leadsToDisplay.filter(l => l.seo_score >= 50 && l.seo_score < 70).length,
+    cold: leadsToDisplay.filter(l => l.seo_score < 50).length,
   };
 
   const downloadCSV = () => {
@@ -102,6 +126,17 @@ export default function ResultsPage() {
     a.download = `leads_export_${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-16 h-16 text-purple-400 animate-spin mx-auto mb-4" />
+          <p className="text-white text-xl">Loading leads...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Home, Calendar, Save, Play, Pause } from 'lucide-react';
+import { Home, Calendar, Save, Play, Pause, Loader2 } from 'lucide-react';
 
 export default function AutomationPage() {
   const [enabled, setEnabled] = useState(false);
@@ -11,12 +11,68 @@ export default function AutomationPage() {
   const [time, setTime] = useState('09:00');
   const [industries, setIndustries] = useState('');
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleSave = () => {
-    // Simulate saving config
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+  useEffect(() => {
+    loadConfig();
+  }, []);
+
+  const loadConfig = async () => {
+    try {
+      const response = await fetch('/api/automation');
+      const data = await response.json();
+
+      if (data.config) {
+        setEnabled(data.config.enabled);
+        setLocation(data.config.location);
+        setDay(data.config.day_of_week);
+        setTime(data.config.time);
+        setIndustries(data.config.industries || '');
+      }
+    } catch (error) {
+      console.error('Error loading config:', error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleSave = async () => {
+    try {
+      const response = await fetch('/api/automation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          enabled,
+          location,
+          day_of_week: day,
+          time,
+          industries,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.config) {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 3000);
+      }
+    } catch (error) {
+      console.error('Error saving config:', error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-16 h-16 text-purple-400 animate-spin mx-auto mb-4" />
+          <p className="text-white text-xl">Loading configuration...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
@@ -50,7 +106,21 @@ export default function AutomationPage() {
               </p>
             </div>
             <button
-              onClick={() => setEnabled(!enabled)}
+              onClick={async () => {
+                const newEnabled = !enabled;
+                setEnabled(newEnabled);
+                await fetch('/api/automation', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    enabled: newEnabled,
+                    location,
+                    day_of_week: day,
+                    time,
+                    industries,
+                  }),
+                });
+              }}
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all ${
                 enabled
                   ? 'bg-red-500 hover:bg-red-600 text-white'

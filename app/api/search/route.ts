@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
@@ -113,6 +114,17 @@ export async function POST(request: NextRequest) {
         }
       } catch (industryError) {
         console.error(`Error searching ${industry}:`, industryError);
+      }
+    }
+
+    // Save leads to database
+    if (results.length > 0) {
+      const { error: insertError } = await supabaseAdmin
+        .from('leads')
+        .insert(results);
+
+      if (insertError) {
+        console.error('Error saving leads to database:', insertError);
       }
     }
 
