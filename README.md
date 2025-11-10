@@ -1,12 +1,30 @@
-# 🚀 C&L SEO Lead Finder (Next.js)
+# 🚀 C&L SEO Lead Finder
 
-**Modern rebuild of the SEO Lead Finder using Next.js, TypeScript, and Tailwind CSS**
+**Find local businesses with SEO issues to generate leads**
 
 Built by C&L Page Services
 
+## 🎯 Two Versions Available
+
+### 🐍 Python CLI (Simple & Quick)
+**Perfect for quick searches and automation**
+- Command-line tool
+- Immediate results
+- No setup required (just API keys)
+- Easy to schedule with cron
+- [→ See PYTHON_README.md](PYTHON_README.md)
+
+### 🌐 Next.js Web App (Full Featured)
+**Beautiful UI with database and automation**
+- Modern web interface
+- Database storage
+- Automation scheduling
+- Results dashboard
+- [↓ Setup instructions below](#-getting-started)
+
 ---
 
-## ✨ Features
+## ✨ Features (Next.js Web Version)
 
 - 🔍 **Manual Search** - Find SEO leads on-demand by location and industry
 - ⏰ **Automation** - Schedule weekly lead generation runs
@@ -28,7 +46,7 @@ Built by C&L Page Services
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (Next.js Web Version)
 
 ### 1. Install Dependencies
 
